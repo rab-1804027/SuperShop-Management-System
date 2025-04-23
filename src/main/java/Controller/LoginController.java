@@ -1,10 +1,11 @@
 package Controller;
 
+import Dto.UserDto;
 import Model.User;
-import Service.UserService;
-import Exception.UserNotFoundException;
 import Exception.UserValidationException;
+import Service.UserService;
 import Utility.Constants;
+import Utility.PasswordHashing;
 import Validation.UserValidator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,36 +17,50 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Map;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
     Logger logger = LoggerFactory.getLogger(LoginController.class);
-    UserService userService = UserService.getSingleObject();
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("Login form fetched");
         request.getRequestDispatcher("Login.jsp").forward(request, response);
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("Login attempted");
-        String username = request.getParameter(Constants.UserInfo.USERNAME);
-        String password = request.getParameter(Constants.UserInfo.PASSWORD);
+
+        if(request.getSession().getAttribute("username")!=null) {
+            response.sendRedirect("/dashboard");
+            return;
+        }
+
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        logger.info("{} attempted for login",username);
         HttpSession session = request.getSession();
         try{
             UserValidator validator = UserValidator.getSingleObject();
-            User user = validator.validateLogin(username, password);
-            if(user != null) {
-                logger.info(username+" Logged in");
-                session.setAttribute("username", user.getUsername());
-                session.setAttribute("role", user.getRole());
-                response.sendRedirect("/");
+            Map<String,String> errors = validator.validateLogin(username, password);
+            if(!errors.isEmpty()) {
+                logger.error(errors.toString());
+                request.setAttribute("errors", errors);
+                request.getRequestDispatcher("Login.jsp").forward(request, response);
             }
-        } catch (UserNotFoundException | UserValidationException e){
-            logger.error(username + "got an error while login: {}", e.getMessage());
+
+            UserService userService = UserService.getSingleObject();
+            UserDto userDto = userService.findByUsername(username);
+            if(userDto!=null && PasswordHashing.checkPassword(password, userDto.getPassword())) {
+                logger.info("{} logged in successfully", username);
+                session.setAttribute("username", username);
+                session.setAttribute("role", userDto.getRole());
+                response.sendRedirect("/dashboard");
+            } else {
+                request.setAttribute("error", Constants.ErrorMessage.LOGIN);
+                request.getRequestDispatcher("Login.jsp").forward(request, response);
+            }
+        } catch (Exception e){
+            logger.error("An exception occurred while {} is trying to login: {}", username, e.getMessage());
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("Login.jsp").forward(request, response);
-        } catch (Exception e) {
-            logger.error(username + " " + e.getMessage());
         }
 
     }

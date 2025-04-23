@@ -1,7 +1,6 @@
 package Controller;
 
 import Service.UserService;
-import Utility.Constants;
 import Validation.UserValidator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,48 +11,40 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import Exception.UserValidationException;
-import Exception.UserNotFoundException;
+import java.util.Map;
 
 
 @WebServlet("/register")
 public class RegisterController extends HttpServlet {
 
     UserService userService = UserService.getSingleObject();
-    UserValidator userValidation = UserValidator.getSingleObject();
 
     private final Logger logger = LoggerFactory.getLogger(RegisterController.class);
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("RegisterForm.jsp").forward(req, resp);
     }
 
-    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("Registration form");
-        String name = req.getParameter(Constants.UserInfo.NAME);
-        String email = req.getParameter(Constants.UserInfo.EMAIL);
-        String username = req.getParameter(Constants.UserInfo.USERNAME);
-        String password = req.getParameter(Constants.UserInfo.PASSWORD);
-        String confirmPassword = req.getParameter(Constants.UserInfo.CONFIRM_PASSWORD);
-
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        String name = req.getParameter("name");
+        String email = req.getParameter("email");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        logger.info("Username::{} is trying to register",username);
         try{
             UserValidator validator = UserValidator.getSingleObject();
-            String error = validator.validateRegistration(req);
+            Map<String,String> errors = validator.validateRegistration(req);
 
-            if(error != null) {
-                logger.error(error);
-                req.setAttribute("error", error);
+            if(!errors.isEmpty()) {
+                logger.error(errors.toString());
+                req.setAttribute("errors", errors);
                 req.getRequestDispatcher("RegisterForm.jsp").forward(req, resp);
             }
 
             userService.save(name, email, username, password);
-            logger.info("User registered successfully");
+            logger.info("Username::{} registered successfully", username);
             resp.sendRedirect("/login");
-        } catch (UserValidationException e) {
-            logger.error(username+ "got an error "+ e.getMessage());
-            req.setAttribute("error", e.getMessage());
-            req.getRequestDispatcher("RegisterForm.jsp").forward(req, resp);
         } catch (Exception e){
-            logger.error("Error while saving user", e);
+            logger.error("Error while saving {}:: {}",username, e.getMessage());
         }
 
     }

@@ -6,10 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
     <title>Registration Form</title>
-    <link rel="stylesheet" href="/CSS/RegistrationForm.css">
+<%--    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/CSS/RegistrationForm.css">--%>
     <style>
         body {
             margin: 0;
@@ -72,17 +73,24 @@
         <form action="register" method="post">
 
             <input type="text" name="name" placeholder="Enter Your Name" required>
+            ${errors.get("nameError")}
             <br>
             <input type="email" name="email" placeholder="Enter Your Email Address" required>
+            ${errors.get("emailError")}
+            ${errors.get("duplicateEmailError")}
             <br>
             <input type="text" name="username" placeholder="Enter a Username" required>
+            ${errors.get("usernameError")}
+            ${errors.get("duplicateUsernameError")}
             <br>
             <input type="password" name="password" placeholder="Set a Password" required>
+            ${errors.get("passwordError")}
             <br>
+            ${inputUser}
             <input type="password" name="confirmPassword" placeholder="Repeat the password" required>
+            ${errors.get("passwordMismatchError")}
             <br>
             <input type="submit" value="Register">
-            ${error}
         </form>
     </div>
 </body>

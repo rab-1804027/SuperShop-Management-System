@@ -1,0 +1,38 @@
+package Mapper;
+
+import Dto.UserDto;
+import Dto.UserInfoDto;
+import Model.User;
+import org.slf4j.ILoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.transform.Result;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+
+public class UserMapper {
+    private static final UserMapper singleObject = new UserMapper();
+    private UserMapper(){}
+
+    public static UserMapper getSingleObject(){
+        return singleObject;
+    }
+
+    public UserDto resultToDto(ResultSet result) throws SQLException {
+        String username = result.getString("username");
+        String password = result.getString("password");
+        String role = result.getString("role");
+        return new UserDto(username, password, role);
+    }
+
+    public UserInfoDto resultToInfoDto(ResultSet result) throws SQLException{
+        String name = result.getString("name");
+        String username = result.getString("username");
+        String email = result.getString("email");
+        LocalDateTime registrationTime = result.getTimestamp("registrationTime").toLocalDateTime();
+
+        return new UserInfoDto(name, username, email, registrationTime);
+    }
+}

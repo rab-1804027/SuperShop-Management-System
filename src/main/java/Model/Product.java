@@ -1,13 +1,12 @@
 package Model;
 
-public class Products {
+public class Product {
     private Integer id;
     private String name;
     private double price;
     private double stockQuantity;
 
-    public Products(Integer id, String name, double price, double stockQuantity) {
-        this.id = id;
+    public Product(String name, double price, double stockQuantity) {
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;

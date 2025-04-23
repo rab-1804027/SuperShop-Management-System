@@ -18,7 +18,7 @@ public class Logout extends HttpServlet {
     Logger logger = LoggerFactory.getLogger(Logout.class);
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info(request.getSession().getAttribute(Constants.UserInfo.USERNAME)+" Logged out");
+        logger.info("{} Logged out", request.getSession().getAttribute("username"));
         HttpSession session = request.getSession();
         session.invalidate();
         response.sendRedirect("/login");
