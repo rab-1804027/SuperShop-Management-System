@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>SuperShop Management</title>
     <style>
         .navbar{
             display: flex;
@@ -33,7 +33,7 @@
             text-decoration: none;
             color: #555;
         }
-        /* Product List Table Styling */
+
         .productList {
             margin: 40px auto;
             width: 90%;
@@ -115,7 +115,7 @@
                 <ul>
                     <li><a href="/dashboard">Home</a></li>
                     <li><a href="/product?action=productForm">Add New Product</a></li>
-                    <li><a href="">Sale Products</a></li>
+                    <li><a href="/product?action=saleProducts">Sale Products</a></li>
                     <li><h1>${sessionScope.username}</h1></li>
                     <li><a href="/logout"><h1>Logout</h1></a></li>
                 </ul>
@@ -127,6 +127,7 @@
         <table>
             <caption><h1>Product List</h1></caption>
             <thead>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Price</th>
                 <th>In Stock</th>
@@ -135,11 +136,12 @@
             <tbody>
             <c:forEach items="${products}" var="product">
                 <tr>
+                    <td>${product.id}</td>
                     <td>${product.name}</td>
                     <td>${product.price}</td>
                     <td>${product.stockQuantity}</td>
-                    <td><button><a href="/product?action=productForm&id=${product.id}">Update</a></button>
-                    <button><a href="">Delete</a></button></td>
+                    <td><button><a href="/product?action=updateForm&id=${product.id}">Update</a></button>
+                    <button><a href="/product?action=delete&id=${product.id}">Delete</a></button></td>
                 </tr>
             </c:forEach>
             </tbody>

@@ -1,6 +1,7 @@
 package Dao;
 
 import Config.DbConfig;
+import Mapper.ProductMapper;
 import Model.Product;
 
 import java.sql.Connection;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class ProductDao {
     Connection connection = DbConfig.connectDb();
+    ProductMapper productMapper = ProductMapper.getSingleObject();
     private static final ProductDao singleObject = new ProductDao();
     private ProductDao(){}
 
@@ -29,6 +31,37 @@ public class ProductDao {
         }
     }
 
+    public void updateById(Product product) throws SQLException {
+        String sqlQuery = "update products set name=?, price=?, stockQuantity=? where id=?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setDouble(2, product.getPrice());
+            preparedStatement.setDouble(3, product.getStockQuantity());
+            preparedStatement.setInt(4, product.getId());
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public void deleteById(Integer id) throws SQLException {
+        String sqlQuery = "delete from products where id=?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public Product findById(Integer id) throws SQLException {
+        String sqlQuery = "select * from products where id=?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            preparedStatement.setInt(1, id);
+            ResultSet result = preparedStatement.executeQuery();
+            if(result.next()){
+                return productMapper.toEntity(result);
+            }
+        }
+        return null;
+    }
+
     public List<Product> findAll() throws SQLException {
         String sqlQuery = "select * from products";
         List<Product> products = new ArrayList<>();
@@ -36,10 +69,7 @@ public class ProductDao {
         {
             ResultSet result = preparedStatement.executeQuery();
             while(result.next()){
-                String name = result.getString("name");
-                Double price = result.getDouble("price");
-                Double stockQuantity = result.getDouble("stockQuantity");
-                products.add(new Product(name, price, stockQuantity));
+                products.add(productMapper.toEntity(result));
             }
             return products;
         }

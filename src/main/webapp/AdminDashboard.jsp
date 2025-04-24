@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Supershop Management</title>
     <style>
         .navbar{
             display: flex;
@@ -47,7 +47,6 @@
             color: #333;
         }
 
-        /* Table styles */
         .shopkeeperList table,
         .pendingShopkeeperList table {
             width: 100%;
@@ -76,7 +75,6 @@
             background-color: #f1f1f1;
         }
 
-        /* Button styling */
         .pendingShopkeeperList button {
             background-color: #007BFF;
             border: none;
@@ -93,12 +91,10 @@
             font-weight: bold;
         }
 
-        /* Hover effect for buttons */
         .pendingShopkeeperList button:hover {
             background-color: #0056b3;
         }
 
-        /* Reject button color */
         .pendingShopkeeperList td button:nth-child(2) {
             background-color: #dc3545;
         }

@@ -107,7 +107,7 @@
                 <ul>
                     <li><a href="/dashboard">Home</a></li>
                     <li><a href="/product?action=productForm">Add New Product</a></li>
-                    <li><a href="">Sale Products</a></li>
+                    <li><a href="/product?action=saleProducts">Sale Products</a></li>
                     <li><h1>${sessionScope.username}</h1></li>
                     <li><a href="/logout"><h1>Logout</h1></a></li>
                 </ul>
@@ -115,10 +115,10 @@
         </div>
         <div class = "productForm">
             <c:if test="${product!=null}">
-                <form action = "/product?action=updateProduct" method = "post">
+                <form action = "/product?action=update" method = "post">
             </c:if>
             <c:if test="${product==null}">
-                <form action = "/product?action=addProduct" method = "post">
+                <form action = "/product?action=add" method = "post">
             </c:if>
                     <caption>
                         <c:if test="${product!=null}">

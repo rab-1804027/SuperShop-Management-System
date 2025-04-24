@@ -20,6 +20,18 @@ public class ProductService {
         productDao.save(product);
     }
 
+    public void updateById(Product product) throws SQLException {
+        productDao.updateById(product);
+    }
+
+    public void deleteById(Integer id) throws SQLException {
+        productDao.deleteById(id);
+    }
+
+    public Product findById(Integer id) throws SQLException {
+        return productDao.findById(id);
+    }
+
     public List<Product> findAll() throws SQLException {
         return productDao.findAll();
     }

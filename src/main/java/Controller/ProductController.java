@@ -23,20 +23,42 @@ public class ProductController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
         switch (action){
-            case "productForm": {
+            case "productForm"-> {
                 resp.sendRedirect("ProductForm.jsp");
+                break;
+            }
+            case "updateForm"-> {
+                int id = Integer.parseInt(req.getParameter("id"));
+                try {
+                    Product product = productService.findById(id);
+                    req.setAttribute("product", product);
+                    req.getRequestDispatcher("ProductForm.jsp").forward(req, resp);
+                } catch (Exception e) {
+                    logger.error("An error occurred while fetching product by id: {}", e.getMessage());
+                }
+                break;
+            }
+            case "saleProducts"-> {
+                resp.sendRedirect("SaleProducts.jsp");
+                break;
+            }
+            case "delete"-> {
+                doPost(req, resp);
+                break;
             }
         }
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        String name = req.getParameter("name");
-        Double price = Double.valueOf(req.getParameter("price"));
-        Double stockQuantity = Double.valueOf(req.getParameter("stockQuantity"));
+
         switch (action){
-            case "addProduct": {
+            case "add": {
                 try{
+                    String name = req.getParameter("name");
+                    double price = Double.parseDouble(req.getParameter("price"));
+                    double stockQuantity = Double.parseDouble(req.getParameter("stockQuantity"));
+
                     ProductValidator validator = ProductValidator.getSingleObject();
                     Map<String,String> errors = validator.validate(name, price, stockQuantity);
                     if(!errors.isEmpty()) {
@@ -52,9 +74,31 @@ public class ProductController extends HttpServlet {
                     logger.error("An error occurred while saving product: {}", e.getMessage());
                     req.getRequestDispatcher("ProductForm.jsp").forward(req, resp);
                 }
+                break;
             }
-            case "updateProduct": {
-
+            case "update": {
+                try{
+                    int id = Integer.parseInt(req.getParameter("id"));
+                    String name = req.getParameter("name");
+                    double price = Double.parseDouble(req.getParameter("price"));
+                    double stockQuantity = Double.parseDouble(req.getParameter("stockQuantity"));
+                    Product product = new Product(id, name, price, stockQuantity);
+                    productService.updateById(product);
+                    resp.sendRedirect("/dashboard");
+                } catch (Exception e){
+                    logger.error("An error occurred while updating product: {}",e.getMessage());
+                }
+                break;
+            }
+            case "delete": {
+                try{
+                    int id = Integer.parseInt(req.getParameter("id"));
+                    productService.deleteById(id);
+                    resp.sendRedirect("/dashboard");
+                } catch (Exception e){
+                    logger.error("An error occurred while deleting product by id: {}", e.getMessage());
+                }
+                break;
             }
         }
     }
