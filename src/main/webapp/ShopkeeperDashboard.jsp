@@ -33,6 +33,76 @@
             text-decoration: none;
             color: #555;
         }
+        /* Product List Table Styling */
+        .productList {
+            margin: 40px auto;
+            width: 90%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+        }
+
+        .productList h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Table base */
+        .productList table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .productList thead {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .productList th, .productList td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .productList tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Button styles */
+        .productList button {
+            background-color: #007BFF;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .productList button a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Hover effect */
+        .productList button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Optional: Delete button style */
+        .productList td button:nth-child(2) {
+            background-color: #dc3545;
+        }
+
+        .productList td button:nth-child(2):hover {
+            background-color: #a71d2a;
+        }
+
     </style>
 </head>
 <body>
@@ -47,13 +117,13 @@
                     <li><a href="/product?action=productForm">Add New Product</a></li>
                     <li><a href="">Sale Products</a></li>
                     <li><h1>${sessionScope.username}</h1></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="/logout"><h1>Logout</h1></a></li>
                 </ul>
             </nav>
         </div>
     </div>
 
-    <div>
+    <div class = "productList">
         <table>
             <caption><h1>Product List</h1></caption>
             <thead>

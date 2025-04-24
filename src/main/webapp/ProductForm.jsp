@@ -44,46 +44,56 @@
             color: #555;
         }
 
-        .ProductForm{
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 350px;
+        .productForm {
+            width: 50%;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .ProductForm form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .ProductForm h2 {
+        .productForm h2 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #333;
+            margin-bottom: 25px;
+            color: #28a745;
         }
 
-        .ProductForm input[type="text"],
-        .ProductForm input[type="password"] {
-            padding: 10px;
-            margin-bottom: 15px;
+        .productForm input[type="text"],
+        .productForm input[type="number"] {
+            width: 100%;
+            padding: 10px 15px;
+            margin: 10px 0 5px 0;
             border: 1px solid #ccc;
             border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
         }
 
-        .ProductForm input[type="submit"] {
+        .productForm .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .productForm button[type="submit"] {
+            width: 100%;
             padding: 10px;
-            background: #007BFF;
+            margin-top: 20px;
+            background-color: #007BFF;
             color: white;
+            font-size: 16px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s ease;
+            transition: background-color 0.3s ease;
         }
 
-        .ProductForm input[type="submit"]:hover {
-            background: #0056b3;
+        .productForm button[type="submit"]:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -99,13 +109,11 @@
                     <li><a href="/product?action=productForm">Add New Product</a></li>
                     <li><a href="">Sale Products</a></li>
                     <li><h1>${sessionScope.username}</h1></li>
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="/logout"><h1>Logout</h1></a></li>
                 </ul>
             </nav>
         </div>
-
-    <div class = "container">
-        <div class = "ProductForm">
+        <div class = "productForm">
             <c:if test="${product!=null}">
                 <form action = "/product?action=updateProduct" method = "post">
             </c:if>
@@ -134,6 +142,5 @@
                     <button type = "submit">Submit</button>
                 </form>
         </div>
-    </div>
 </body>
 </html>

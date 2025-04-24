@@ -15,8 +15,7 @@
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
 <br>
-<small>${sessionScope.username}</small>
-<button><a href="/dashboard">Dashboard</a></button>
+<button><a href="/login">Login</a></button>
 <button><a href="/register">Register</a></button>
 
 </body>

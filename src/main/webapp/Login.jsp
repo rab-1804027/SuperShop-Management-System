@@ -8,16 +8,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    if (session != null && session.getAttribute("user") != null) {
-        response.sendRedirect("dashboard.jsp");
-        return;
-    }
-%>
-
-<%
+    // Prevent caching
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
+
+    // If already logged in, redirect to dashboard
+    if (session.getAttribute("user") != null) {
+        response.sendRedirect("dashboard.jsp");
+        return;
+    }
 %>
 
 <html>
@@ -94,6 +94,15 @@
         </form>
     </div>
 
+<script>
+    // Try to force recheck from server on back navigation
+    window.addEventListener("pageshow", function(event) {
+        // If the page is loaded from cache
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            location.reload(); // Force reloading from server
+        }
+    });
+</script>
 
 </body>
 </html>
