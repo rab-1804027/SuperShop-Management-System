@@ -1,5 +1,6 @@
 package Controller;
 
+import Dto.ProductDto;
 import Model.CartItem;
 import Model.Product;
 import Model.ProductCart;
@@ -39,7 +40,7 @@ public class ProductCartController extends HttpServlet {
                     HttpSession session = req.getSession();
                     ProductCart cart = (ProductCart) session.getAttribute("cart");
 
-                    Product product = productService.findById(productId);
+                    ProductDto product = productService.findById(productId);
                     CartItem cartItem = new CartItem(product, quantity);
 
                     cart.add(cartItem);
@@ -53,7 +54,7 @@ public class ProductCartController extends HttpServlet {
                 break;
             }
             case "remove": {
-                int productId = Integer.parseInt(req.getParameter("productId")); System.out.println(productId);
+                int productId = Integer.parseInt(req.getParameter("productId"));
                 HttpSession session = req.getSession();
                 ProductCart cart = (ProductCart) session.getAttribute("cart");
 

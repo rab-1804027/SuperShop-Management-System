@@ -21,10 +21,11 @@ public class UserMapper {
     }
 
     public UserDto resultToDto(ResultSet result) throws SQLException {
+        int id = result.getInt("id");
         String username = result.getString("username");
         String password = result.getString("password");
         String role = result.getString("role");
-        return new UserDto(username, password, role);
+        return new UserDto(id, username, password, role);
     }
 
     public UserInfoDto resultToInfoDto(ResultSet result) throws SQLException{

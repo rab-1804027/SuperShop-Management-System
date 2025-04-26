@@ -1,21 +1,23 @@
 package Model;
 
+import Dto.ProductDto;
+
 public class CartItem {
-    private Product product;
+    private ProductDto product;
     private double quantity;
     private double price;
 
-    public CartItem(Product product, double quantity) {
+    public CartItem(ProductDto product, double quantity) {
         this.product = product;
         this.quantity = quantity;
         this.price = product.getPrice() * quantity;
     }
 
-    public Product getProduct() {
+    public ProductDto getProduct() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setProduct(ProductDto product) {
         this.product = product;
     }
 

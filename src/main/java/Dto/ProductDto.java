@@ -1,24 +1,23 @@
-package Model;
+package Dto;
 
-public class Product {
+public class ProductDto {
     private int id;
-    private int userId;
     private String name;
     private double price;
     private double stockQuantity;
 
-    public Product(int userId, String name, double price, double stockQuantity) {
-        this.userId = userId;
+    public ProductDto(int id, String name, double price, double stockQuantity) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -44,11 +43,5 @@ public class Product {
 
     public void setStockQuantity(double stockQuantity) {
         this.stockQuantity = stockQuantity;
-    }
-    public int getUserId() {
-        return userId;
-    }
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 }

@@ -2,6 +2,7 @@ package Controller;
 
 
 import Dao.UserDao;
+import Dto.ProductDto;
 import Dto.UserInfoDto;
 import Enums.ApprovalStatus;
 import Model.CartItem;
@@ -49,8 +50,8 @@ public class DashboardController extends HelloServlet {
             case "Shopkeeper" -> {
                 try {
                     HttpSession session = request.getSession();
-
-                    List<Product> products = productService.findAll();
+                    int userId = (int) session.getAttribute("userId");
+                    List<ProductDto> products = productService.findAll(userId);
                     ProductCart productCart = (ProductCart) session.getAttribute("cart");
 
                     session.setAttribute("products", products);

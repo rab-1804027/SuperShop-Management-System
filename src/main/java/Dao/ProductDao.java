@@ -1,6 +1,7 @@
 package Dao;
 
 import Config.DbConfig;
+import Dto.ProductDto;
 import Mapper.ProductMapper;
 import Model.Product;
 
@@ -22,16 +23,17 @@ public class ProductDao {
     }
 
     public void save(Product product) throws SQLException {
-        String sqlQuery = "insert into products (name, price, stockQuantity) values (?,?,?)";
+        String sqlQuery = "insert into products (userId, name, price, stockQuantity) values (?,?,?,?)";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
-            preparedStatement.setString(1, product.getName());
-            preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setDouble(3, product.getStockQuantity());
+            preparedStatement.setInt(1, product.getUserId());
+            preparedStatement.setString(2, product.getName());
+            preparedStatement.setDouble(3, product.getPrice());
+            preparedStatement.setDouble(4, product.getStockQuantity());
             preparedStatement.executeUpdate();
         }
     }
 
-    public void updateById(Product product) throws SQLException {
+    public void updateById(ProductDto product) throws SQLException {
         String sqlQuery = "update products set name=?, price=?, stockQuantity=? where id=?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
             preparedStatement.setString(1, product.getName());
@@ -50,26 +52,27 @@ public class ProductDao {
         }
     }
 
-    public Product findById(Integer id) throws SQLException {
+    public ProductDto findById(Integer id) throws SQLException {
         String sqlQuery = "select * from products where id=?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
             preparedStatement.setInt(1, id);
             ResultSet result = preparedStatement.executeQuery();
             if(result.next()){
-                return productMapper.toEntity(result);
+                return productMapper.toDto(result);
             }
         }
         return null;
     }
 
-    public List<Product> findAll() throws SQLException {
-        String sqlQuery = "select * from products";
-        List<Product> products = new ArrayList<>();
+    public List<ProductDto> findAll(int userId) throws SQLException {
+        String sqlQuery = "select * from products where userId=?";
+        List<ProductDto> products = new ArrayList<>();
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery))
         {
+            preparedStatement.setInt(1, userId);
             ResultSet result = preparedStatement.executeQuery();
             while(result.next()){
-                products.add(productMapper.toEntity(result));
+                products.add(productMapper.toDto(result));
             }
             return products;
         }

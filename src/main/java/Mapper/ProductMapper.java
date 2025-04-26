@@ -1,5 +1,6 @@
 package Mapper;
 
+import Dto.ProductDto;
 import Model.Product;
 
 import java.sql.ResultSet;
@@ -12,11 +13,11 @@ public class ProductMapper {
         return singleObject;
     }
 
-    public Product toEntity(ResultSet result) throws SQLException {
+    public ProductDto toDto(ResultSet result) throws SQLException {
         int id = result.getInt("id");
         String name = result.getString("name");
         double price = result.getDouble("price");
         double stockQuantity = result.getDouble("stockQuantity");
-        return new Product(id, name, price, stockQuantity);
+        return new ProductDto(id, name, price, stockQuantity);
     }
 }

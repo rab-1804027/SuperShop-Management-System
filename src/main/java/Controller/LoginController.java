@@ -50,6 +50,7 @@ public class LoginController extends HttpServlet {
             UserDto userDto = userService.findByUsername(username);
             if(userDto!=null && PasswordHashing.checkPassword(password, userDto.getPassword())) {
                 logger.info("{} logged in successfully", username);
+                session.setAttribute("userId", userDto.getId());
                 session.setAttribute("username", username);
                 session.setAttribute("role", userDto.getRole());
                 response.sendRedirect("/dashboard");

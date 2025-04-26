@@ -127,6 +127,8 @@
                     </caption>
                     <input type = "hidden" name = "id" value = "${product.id}">
                     <br>
+                    <input type = "hidden" name="userId" value="${sessionScope.userId}">
+                    <br>
                     <input type = "text" name = "name" placeholder = "Enter Product Name" value = "${product.name}">
                     ${errors.name}
                     <br>

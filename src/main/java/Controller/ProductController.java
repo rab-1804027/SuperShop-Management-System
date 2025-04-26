@@ -1,5 +1,6 @@
 package Controller;
 
+import Dto.ProductDto;
 import Model.Product;
 import Service.ProductService;
 import Validation.ProductValidator;
@@ -34,7 +35,7 @@ public class ProductController extends HttpServlet {
             case "updateForm"-> {
                 int id = Integer.parseInt(req.getParameter("id"));
                 try {
-                    Product product = productService.findById(id);
+                    ProductDto product = productService.findById(id);
                     session.setAttribute("product", product);
                     session.setAttribute("action", action);
                     resp.sendRedirect("/jspPage/UpdateProduct");
@@ -63,6 +64,8 @@ public class ProductController extends HttpServlet {
         switch (action){
             case "add": {
                 try{
+                    int userId = Integer.parseInt(req.getParameter("userId"));
+                    System.out.println(userId);
                     String name = req.getParameter("name");
                     double price = Double.parseDouble(req.getParameter("price"));
                     double stockQuantity = Double.parseDouble(req.getParameter("stockQuantity"));
@@ -75,7 +78,7 @@ public class ProductController extends HttpServlet {
                         req.getRequestDispatcher("ProductForm.jsp").forward(req, resp);
                     }
 
-                    productService.save(new Product(name, price, stockQuantity));
+                    productService.save(new Product(userId, name, price, stockQuantity));
                     logger.info("Product::{} added successfully", name);
                     resp.sendRedirect("/dashboard");
                 } catch (Exception e){
@@ -90,7 +93,7 @@ public class ProductController extends HttpServlet {
                     String name = req.getParameter("name");
                     double price = Double.parseDouble(req.getParameter("price"));
                     double stockQuantity = Double.parseDouble(req.getParameter("stockQuantity"));
-                    Product product = new Product(id, name, price, stockQuantity);
+                    ProductDto product = new ProductDto(id, name, price, stockQuantity);
                     productService.updateById(product);
                     HttpSession session = req.getSession();
                     session.removeAttribute("product");

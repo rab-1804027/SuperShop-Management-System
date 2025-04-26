@@ -1,6 +1,7 @@
 package Service;
 
 import Dao.ProductDao;
+import Dto.ProductDto;
 import Model.Product;
 
 import java.sql.SQLException;
@@ -20,7 +21,7 @@ public class ProductService {
         productDao.save(product);
     }
 
-    public void updateById(Product product) throws SQLException {
+    public void updateById(ProductDto product) throws SQLException {
         productDao.updateById(product);
     }
 
@@ -28,11 +29,11 @@ public class ProductService {
         productDao.deleteById(id);
     }
 
-    public Product findById(Integer id) throws SQLException {
+    public ProductDto findById(int id) throws SQLException {
         return productDao.findById(id);
     }
 
-    public List<Product> findAll() throws SQLException {
-        return productDao.findAll();
+    public List<ProductDto> findAll(int userId) throws SQLException {
+        return productDao.findAll(userId);
     }
 }
