@@ -4,7 +4,9 @@ package Controller;
 import Dao.UserDao;
 import Dto.UserInfoDto;
 import Enums.ApprovalStatus;
+import Model.CartItem;
 import Model.Product;
+import Model.ProductCart;
 import Service.ProductService;
 import Service.UserService;
 import com.bappi.supershopmanagementsystem.HelloServlet;
@@ -18,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/dashboard")
@@ -45,9 +48,20 @@ public class DashboardController extends HelloServlet {
             }
             case "Shopkeeper" -> {
                 try {
+                    HttpSession session = request.getSession();
+
                     List<Product> products = productService.findAll();
-                    request.setAttribute("products", products);
+                    ProductCart productCart = (ProductCart) session.getAttribute("cart");
+
+                    session.setAttribute("products", products);
+                    if(productCart == null) {
+                        productCart = ProductCart.getSingleObject();
+                        productCart.clearCart();
+                        session.setAttribute("cart", productCart);
+                    }
+
                     request.getRequestDispatcher("ShopkeeperDashboard.jsp").forward(request, response);
+                    //response.sendRedirect("ShopkeeperDashboard.jsp");
                 } catch (Exception e) {
                     logger.error("An error occurred while forwarding to Shopkeeper.jsp: ", e);
                 }

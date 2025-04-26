@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,25 +22,32 @@ public class ProductController extends HttpServlet {
     ProductService productService = ProductService.getSingleObject();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
         String action = req.getParameter("action");
         switch (action){
             case "productForm"-> {
-                resp.sendRedirect("ProductForm.jsp");
+                session.setAttribute("action", action);
+                resp.sendRedirect("/jspPage/ProductForm");
+                //req.getRequestDispatcher("ProductForm.jsp").forward(req, resp);
                 break;
             }
             case "updateForm"-> {
                 int id = Integer.parseInt(req.getParameter("id"));
                 try {
                     Product product = productService.findById(id);
-                    req.setAttribute("product", product);
-                    req.getRequestDispatcher("ProductForm.jsp").forward(req, resp);
+                    session.setAttribute("product", product);
+                    session.setAttribute("action", action);
+                    resp.sendRedirect("/jspPage/UpdateProduct");
                 } catch (Exception e) {
                     logger.error("An error occurred while fetching product by id: {}", e.getMessage());
                 }
                 break;
             }
-            case "saleProducts"-> {
-                resp.sendRedirect("SaleProducts.jsp");
+            case "productCart"-> {
+
+                session.setAttribute("action", action);
+                resp.sendRedirect("/jspPage/ProductCart");
+                //req.getRequestDispatcher("ProductCart.jsp").forward(req, resp);
                 break;
             }
             case "delete"-> {
@@ -84,6 +92,8 @@ public class ProductController extends HttpServlet {
                     double stockQuantity = Double.parseDouble(req.getParameter("stockQuantity"));
                     Product product = new Product(id, name, price, stockQuantity);
                     productService.updateById(product);
+                    HttpSession session = req.getSession();
+                    session.removeAttribute("product");
                     resp.sendRedirect("/dashboard");
                 } catch (Exception e){
                     logger.error("An error occurred while updating product: {}",e.getMessage());

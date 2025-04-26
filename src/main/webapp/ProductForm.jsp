@@ -11,15 +11,6 @@
 <head>
     <title>Product Form</title>
     <style>
-        .container {
-            margin: 0;
-            padding: 0;
-            height: 90vh;
-            background: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
         .navbar{
             display: flex;
@@ -42,6 +33,10 @@
         .navbar a{
             text-decoration: none;
             color: #555;
+        }
+        a:hover {
+            color: #007BFF;
+            text-decoration: underline;
         }
 
         .productForm {
@@ -98,7 +93,6 @@
     </style>
 </head>
 <body>
-
         <div class="navbar">
             <div class = "title">
                 <h1>SuperShop Management System</h1>
@@ -107,12 +101,15 @@
                 <ul>
                     <li><a href="/dashboard">Home</a></li>
                     <li><a href="/product?action=productForm">Add New Product</a></li>
-                    <li><a href="/product?action=saleProducts">Sale Products</a></li>
+                    <li><a href="/product?action=productCart">Cart</a></li>
                     <li><h1>${sessionScope.username}</h1></li>
                     <li><a href="/logout"><h1>Logout</h1></a></li>
                 </ul>
             </nav>
         </div>
+
+        <c:set var = "product" value = "${sessionScope.product}"/>
+
         <div class = "productForm">
             <c:if test="${product!=null}">
                 <form action = "/product?action=update" method = "post">

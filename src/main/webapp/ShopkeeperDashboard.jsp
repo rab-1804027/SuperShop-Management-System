@@ -16,22 +16,27 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            background-color: #fff;
         }
-        nav{
+        .navbar nav{
             flex: 1;
             text-align: right;
         }
-        nav ul{
+        .navbar nav ul{
             display: inline-block;
             list-style-type: none;
         }
-        nav ul li{
+        .navbar nav ul li{
             display: inline-block;
             margin-right: 20px;
         }
-        a{
+        .navbar a{
             text-decoration: none;
             color: #555;
+        }
+        a:hover {
+            color: #007BFF;
+            text-decoration: underline;
         }
 
         .productList {
@@ -106,21 +111,19 @@
     </style>
 </head>
 <body>
-    <div class = "container">
-        <div class="navbar">
-            <div class = "title">
-                <h1>SuperShop Management System</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="/dashboard">Home</a></li>
-                    <li><a href="/product?action=productForm">Add New Product</a></li>
-                    <li><a href="/product?action=saleProducts">Sale Products</a></li>
-                    <li><h1>${sessionScope.username}</h1></li>
-                    <li><a href="/logout"><h1>Logout</h1></a></li>
-                </ul>
-            </nav>
+    <div class="navbar">
+        <div class = "title">
+            <h1>SuperShop Management System</h1>
         </div>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/product?action=productForm">Add New Product</a></li>
+                <li><a href="/product?action=productCart">Cart</a></li>
+                <li><h1>${sessionScope.username}</h1></li>
+                <li><a href="/logout"><h1>Logout</h1></a></li>
+            </ul>
+        </nav>
     </div>
 
     <div class = "productList">
@@ -132,6 +135,7 @@
                 <th>Price</th>
                 <th>In Stock</th>
                 <th>Manage</th>
+                <th>AddToCart</th>
             </thead>
             <tbody>
             <c:forEach items="${products}" var="product">
@@ -142,6 +146,10 @@
                     <td>${product.stockQuantity}</td>
                     <td><button><a href="/product?action=updateForm&id=${product.id}">Update</a></button>
                     <button><a href="/product?action=delete&id=${product.id}">Delete</a></button></td>
+                    <td><form action="/productCart?action=add&productId=${product.id}" method="post">
+                        <input type="number" name="quantity" placeholder="Enter Quantity">
+                        <button type="submit">Add</button>
+                    </form></td>
                 </tr>
             </c:forEach>
             </tbody>
