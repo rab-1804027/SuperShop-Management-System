@@ -4,7 +4,9 @@ import Dto.ProductDto;
 import Model.CartItem;
 import Model.Product;
 import Model.ProductCart;
+import Model.Sale;
 import Service.ProductService;
+import Service.SaleService;
 import Service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -54,14 +56,37 @@ public class ProductCartController extends HttpServlet {
                 break;
             }
             case "remove": {
-                int productId = Integer.parseInt(req.getParameter("productId"));
-                HttpSession session = req.getSession();
-                ProductCart cart = (ProductCart) session.getAttribute("cart");
+                try{
+                    int productId = Integer.parseInt(req.getParameter("productId"));
+                    HttpSession session = req.getSession();
+                    ProductCart cart = (ProductCart) session.getAttribute("cart");
 
-                cart.removeByProductId(productId);
-                session.setAttribute("cart", cart);
-                session.setAttribute("action", "productCart");
-                resp.sendRedirect("/jspPage/ProductCart");
+                    cart.removeByProductId(productId);
+                    session.setAttribute("cart", cart);
+                    session.setAttribute("action", "productCart");
+                    resp.sendRedirect("/jspPage/ProductCart");
+                }catch (Exception e)
+                {
+                    logger.error("An error occurred while removing product from cart: {}", e.getMessage());
+                }
+                break;
+            }
+            case "checkout": {
+                try{
+                    HttpSession session = req.getSession();
+                    SaleService saleService = SaleService.getSingleObject();
+
+                    int userId = (int) session.getAttribute("userId");
+                    ProductCart cart = (ProductCart) session.getAttribute("cart");
+
+                    Sale sale = new Sale(userId, cart.getTotalPrice());
+                    int saleId = saleService.save(sale);
+                    System.out.println(saleId);
+
+                }catch (Exception e)
+                {
+                    logger.error("An error occurred while checking out cart: {}", e.getMessage());
+                }
                 break;
             }
         }

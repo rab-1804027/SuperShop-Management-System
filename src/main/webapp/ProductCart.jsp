@@ -177,21 +177,19 @@
     <title>Cart</title>
 </head>
 <body>
-    <div class = "container">
-        <div class="navbar">
-            <div class = "title">
-                <h1>SuperShop Management System</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="/dashboard">Home</a></li>
-                    <li><a href="/product?action=productForm">Add New Product</a></li>
-                    <li><a href="/product?action=productCart">Cart</a></li>
-                    <li><h1>${sessionScope.username}</h1></li>
-                    <li><a href="/logout"><h1>Logout</h1></a></li>
-                </ul>
-            </nav>
+    <div class="navbar">
+        <div class = "title">
+            <h1>SuperShop Management System</h1>
         </div>
+        <nav>
+            <ul>
+                <li><a href="/dashboard">Home</a></li>
+                <li><a href="/product?action=productForm">Add New Product</a></li>
+                <li><a href="/product?action=productCart">Cart</a></li>
+                <li><h1>${sessionScope.username}</h1></li>
+                <li><a href="/logout"><h1>Logout</h1></a></li>
+            </ul>
+        </nav>
     </div>
 
     <div class = "productCartList">
@@ -223,8 +221,10 @@
     </div>
 
     <div class="totalPrice">
-        <h1>Total Price: ${sessionScope.cart.totalPrice}</h1>
-        <button>Checkout</button>
+        <form action="/productCart?action=checkout" method="post">
+            <h1>Total Price: ${sessionScope.cart.totalPrice}</h1>
+            <button>Checkout</button>
+        </form>
     </div>
 
 

@@ -27,6 +27,5 @@ public class ProductValidator {
             errors.put("stockQuantity", "Stock quantity cannot be null or negative");
         }
         return errors;
-
     }
 }
