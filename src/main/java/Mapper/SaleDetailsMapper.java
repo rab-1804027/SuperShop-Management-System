@@ -15,7 +15,7 @@ public class SaleDetailsMapper {
 
     public SaleDetailsDto toDto(ResultSet result) throws SQLException {
         String productName = result.getString("name");
-        double unitPrice = result.getDouble("products.price");
+        double unitPrice = result.getDouble("saleDetails.unitPrice");
         int quantity = result.getInt("quantity");
         double totalPrice = result.getDouble("saleDetails.price");
         return new SaleDetailsDto(productName, unitPrice, quantity, totalPrice);

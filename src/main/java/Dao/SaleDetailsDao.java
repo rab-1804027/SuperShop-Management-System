@@ -18,13 +18,14 @@ public class SaleDetailsDao {
         return singleObject;
     }
 
-    public void save(int saleId, int productId, double quantity, double price)throws SQLException {
-        String sqlQuery = "insert into saleDetails (saleId, productId, quantity, price) values (?,?,?,?)";
+    public void save(int saleId, int productId, double unitPrice, double quantity, double price)throws SQLException {
+        String sqlQuery = "insert into saleDetails (saleId, productId, unitPrice, quantity, price) values (?,?,?,?,?)";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
             preparedStatement.setInt(1, saleId);
             preparedStatement.setInt(2, productId);
-            preparedStatement.setDouble(3, quantity);
-            preparedStatement.setDouble(4, price);
+            preparedStatement.setDouble(3,unitPrice);
+            preparedStatement.setDouble(4, quantity);
+            preparedStatement.setDouble(5, price);
             preparedStatement.executeUpdate();
 
         }

@@ -29,9 +29,10 @@ public class SaleDetailsService {
     public void save(int saleId, ProductCart cart)throws SQLException {
         for(CartItem cartItem : cart.getCartItems()){
             int productId = cartItem.getProduct().getId();
+            double unitPrice = cartItem.getProduct().getPrice();
             double quantity = cartItem.getQuantity();
             double price = cartItem.getPrice();
-            saleDetailsDao.save(saleId, productId, quantity, price);
+            saleDetailsDao.save(saleId, productId, unitPrice, quantity, price);
         }
     }
 
