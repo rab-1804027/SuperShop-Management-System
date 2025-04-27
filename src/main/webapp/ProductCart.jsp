@@ -186,6 +186,7 @@
                 <li><a href="/dashboard">Home</a></li>
                 <li><a href="/product?action=productForm">Add New Product</a></li>
                 <li><a href="/product?action=productCart">Cart</a></li>
+                <li><a href="/product?action=saleRecords">Sale Records</a></li>
                 <li><h1>${sessionScope.username}</h1></li>
                 <li><a href="/logout"><h1>Logout</h1></a></li>
             </ul>

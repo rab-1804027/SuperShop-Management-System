@@ -1,12 +1,17 @@
 package Dao;
 
 import Config.DbConfig;
+import Dto.SaleDto;
+import Mapper.SaleMapper;
 import Model.Sale;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SaleDao {
     Connection connection = DbConfig.connectDb();
+    SaleMapper saleMapper = SaleMapper.getSingleObject();
 
     private SaleDao(){}
     private static final SaleDao singleObject = new SaleDao();
@@ -29,4 +34,18 @@ public class SaleDao {
         }
         return id;
     }
+
+    public List<SaleDto> findAllByUserId(int userId)throws SQLException {
+        String sqlQuery = "select * from sales where userId=?";
+        List<SaleDto> saleRecords = new ArrayList<>();
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            preparedStatement.setInt(1,userId);
+            ResultSet result = preparedStatement.executeQuery();
+            while(result.next()){
+                saleRecords.add(saleMapper.toDto(result));
+            }
+        }
+        return saleRecords;
+    }
+
 }

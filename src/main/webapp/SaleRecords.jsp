@@ -1,22 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: bappi
-  Date: 4/23/25
-  Time: 12:56 PM
+  Date: 4/27/25
+  Time: 2:31 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>SuperShop Management</title>
     <style>
         .navbar{
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            background-color: #fff;
         }
         .navbar nav{
             flex: 1;
@@ -39,21 +37,21 @@
             text-decoration: underline;
         }
 
-        .productList {
+        .saleRecords {
             margin: 40px auto;
             width: 90%;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f6f8;
         }
 
-        .productList h1 {
+        .saleRecords h1 {
             text-align: center;
             margin-bottom: 20px;
             color: #333;
         }
 
         /* Table base */
-        .productList table {
+        .saleRecords table {
             width: 100%;
             border-collapse: collapse;
             background-color: #fff;
@@ -62,23 +60,23 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
-        .productList thead {
+        .saleRecords thead {
             background-color: #28a745;
             color: white;
         }
 
-        .productList th, .productList td {
+        .saleRecords th, .saleRecords td {
             padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
 
-        .productList tbody tr:hover {
+        .saleRecords tbody tr:hover {
             background-color: #f1f1f1;
         }
 
         /* Button styles */
-        .productList button {
+        .saleRecords button {
             background-color: #007BFF;
             border: none;
             padding: 6px 10px;
@@ -88,27 +86,27 @@
             transition: background-color 0.3s ease;
         }
 
-        .productList button a {
+        .saleRecords button a {
             color: white;
             text-decoration: none;
             font-weight: bold;
         }
 
         /* Hover effect */
-        .productList button:hover {
+        .saleRecords button:hover {
             background-color: #0056b3;
         }
 
         /* Optional: Delete button style */
-        .productList td button:nth-child(2) {
+        .saleRecords td button:nth-child(2) {
             background-color: #dc3545;
         }
 
-        .productList td button:nth-child(2):hover {
+        .saleRecords td button:nth-child(2):hover {
             background-color: #a71d2a;
         }
-
     </style>
+    <title>Sale Records</title>
 </head>
 <body>
     <div class="navbar">
@@ -127,32 +125,26 @@
         </nav>
     </div>
 
-    <div class = "productList">
+    <div class = "saleRecords">
         <table>
-            <caption><h1>Product List</h1></caption>
+            <caption><h1>Sale Records</h1></caption>
             <thead>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>In Stock</th>
-                <th>Manage</th>
-                <th>AddToCart</th>
+                <th>Id</th>
+                <th>Total Price</th>
+                <th>Time</th>
+                <th>Invoice</th>
             </thead>
             <tbody>
-            <c:forEach items="${sessionScope.products}" var="product">
-                <tr>
-                    <td>${product.id}</td>
-                    <td>${product.name}</td>
-                    <td>${product.price}</td>
-                    <td>${product.stockQuantity}</td>
-                    <td><button><a href="/product?action=updateForm&id=${product.id}">Update</a></button>
-                    <button><a href="/product?action=delete&id=${product.id}">Delete</a></button></td>
-                    <td><form action="/productCart?action=add&productId=${product.id}" method="post">
-                        <input type="number" name="quantity" placeholder="Enter Quantity" required>
-                        <button type="submit">Add</button>
-                    </form></td>
-                </tr>
-            </c:forEach>
+                <c:forEach items="${sessionScope.saleRecords}" var="saleRecord">
+                    <tr>
+                        <td>${saleRecord.id}</td>
+                        <td>${saleRecord.totalPrice}</td>
+                        <td>${saleRecord.saleTime}</td>
+                        <td>
+                            <button><a href="">GetInvoicePdf</a></button>
+                        </td>
+                    </tr>
+                </c:forEach>
             </tbody>
         </table>
     </div>

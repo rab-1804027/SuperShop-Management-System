@@ -1,8 +1,10 @@
 package Controller;
 
 import Dto.ProductDto;
+import Dto.SaleDto;
 import Model.Product;
 import Service.ProductService;
+import Service.SaleService;
 import Validation.ProductValidator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/product")
@@ -49,6 +52,20 @@ public class ProductController extends HttpServlet {
                 session.setAttribute("action", action);
                 resp.sendRedirect("/jspPage/ProductCart");
                 //req.getRequestDispatcher("ProductCart.jsp").forward(req, resp);
+                break;
+            }
+            case "saleRecords"->{
+                try{
+                    SaleService saleService = SaleService.getSingleObject();
+                    int userId = (int) session.getAttribute("userId");
+                    List<SaleDto> saleRecords = saleService.findAllByUserId(userId);
+
+                    session.setAttribute("saleRecords", saleRecords);
+                    session.setAttribute("action", action);
+                    resp.sendRedirect("/jspPage/SaleRecords");
+                }catch (Exception e){
+                    logger.error("An error occurred while fetching sale records: {}", e.getMessage());
+                }
                 break;
             }
             case "delete"-> {
