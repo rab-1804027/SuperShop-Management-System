@@ -35,6 +35,18 @@ public class SaleDao {
         return id;
     }
 
+    public SaleDto findBySaleId(int id)throws SQLException {
+        String sqlQuery = "select * from sales where id=?";
+        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
+            preparedStatement.setInt(1,id);
+            ResultSet result = preparedStatement.executeQuery();
+            if(result.next()){
+                return saleMapper.toDto(result);
+            }
+        }
+        return null;
+    }
+
     public List<SaleDto> findAllByUserId(int userId)throws SQLException {
         String sqlQuery = "select * from sales where userId=?";
         List<SaleDto> saleRecords = new ArrayList<>();

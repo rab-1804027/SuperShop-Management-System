@@ -44,14 +44,6 @@ public class ProductDao {
         }
     }
 
-    public void deleteById(Integer id) throws SQLException {
-        String sqlQuery = "delete from products where id=?";
-        try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
-        }
-    }
-
     public ProductDto findById(Integer id) throws SQLException {
         String sqlQuery = "select * from products where id=?";
         try(PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)){

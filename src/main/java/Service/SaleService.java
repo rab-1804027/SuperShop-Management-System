@@ -25,4 +25,8 @@ public class SaleService {
         return saleDao.findAllByUserId(userId);
     }
 
+    public SaleDto findBySaleId(int id)throws SQLException {
+        return saleDao.findBySaleId(id);
+    }
+
 }

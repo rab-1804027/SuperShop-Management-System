@@ -81,8 +81,13 @@ public class ProductCartController extends HttpServlet {
 
                     Sale sale = new Sale(userId, cart.getTotalPrice());
                     int saleId = saleService.save(sale);
-
                     saleDetailsService.save(saleId, cart);
+                    cart.clearCart();
+                    session.setAttribute("cart", cart);
+
+                    session.setAttribute("saleId", saleId);
+                    resp.sendRedirect("/getInvoicePdf");
+
                 }catch (Exception e) {
                     logger.error("An error occurred while checking out cart: {}", e.getMessage());
                 }
@@ -91,4 +96,3 @@ public class ProductCartController extends HttpServlet {
         }
     }
 }
-

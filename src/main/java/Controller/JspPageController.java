@@ -19,7 +19,7 @@ public class JspPageController extends HttpServlet {
                 request.getRequestDispatcher("/ProductCart.jsp").forward(request, response);
                 break;
             }
-            case "saleRecords"->{
+            case "saleRecords","checkout"->{
                 request.getRequestDispatcher("/SaleRecords.jsp").forward(request, response);
                 break;
             }

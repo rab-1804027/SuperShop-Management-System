@@ -158,6 +158,10 @@
             margin-bottom: 20px;
         }
 
+        .totalPrice a{
+            text-decoration: none;
+        }
+
         .totalPrice button {
             background-color: #28a745;
             color: white;
@@ -193,6 +197,8 @@
         </nav>
     </div>
 
+    <c:set var="cart" value="${sessionScope.cart}"></c:set>
+
     <div class = "productCartList">
         <table>
             <caption><h1>Selected Product Items</h1></caption>
@@ -205,7 +211,7 @@
                 <th>Manage</th>
             </thead>
             <tbody>
-                <c:forEach items="${sessionScope.cart.cartItems}" var="cartItem">
+                <c:forEach items="${cart.cartItems}" var="cartItem">
                     <tr>
                         <td>${cartItem.product.id}</td>
                         <td>${cartItem.product.name}</td>
@@ -221,12 +227,32 @@
         </table>
     </div>
 
-    <div class="totalPrice">
-        <form action="/productCart?action=checkout" method="post">
-            <h1>Total Price: ${sessionScope.cart.totalPrice}</h1>
-            <button>Checkout</button>
-        </form>
-    </div>
+    <c:if test="${not empty cart.cartItems}">
+        <div class="totalPrice">
+            <form id="checkoutForm" action="/productCart?action=checkout" method="post" target="_blank">
+                <h1>Total Price: ${sessionScope.cart.totalPrice}</h1>
+                <button type="button" onclick="handleCheckout()">Checkout</button>
+            </form>
+        </div>
+    </c:if>
+
+    <script>
+        async function handleCheckout() {
+            try {
+                // First, submit the form
+                document.getElementById('checkoutForm').submit();
+
+                // Wait a moment to ensure form submission
+                await new Promise(resolve => setTimeout(resolve, 0));
+
+                // Redirect to dashboard
+                window.location.href = '/dashboard';
+            } catch (error) {
+                console.error('Error during checkout:', error);
+            }
+        }
+    </script>
+
 
 
 </body>

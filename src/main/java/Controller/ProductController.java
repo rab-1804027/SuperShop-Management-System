@@ -32,7 +32,6 @@ public class ProductController extends HttpServlet {
             case "productForm"-> {
                 session.setAttribute("action", action);
                 resp.sendRedirect("/jspPage/ProductForm");
-                //req.getRequestDispatcher("ProductForm.jsp").forward(req, resp);
                 break;
             }
             case "updateForm"-> {
@@ -51,7 +50,6 @@ public class ProductController extends HttpServlet {
 
                 session.setAttribute("action", action);
                 resp.sendRedirect("/jspPage/ProductCart");
-                //req.getRequestDispatcher("ProductCart.jsp").forward(req, resp);
                 break;
             }
             case "saleRecords"->{
@@ -66,10 +64,6 @@ public class ProductController extends HttpServlet {
                 }catch (Exception e){
                     logger.error("An error occurred while fetching sale records: {}", e.getMessage());
                 }
-                break;
-            }
-            case "delete"-> {
-                doPost(req, resp);
                 break;
             }
         }
@@ -117,16 +111,6 @@ public class ProductController extends HttpServlet {
                     resp.sendRedirect("/dashboard");
                 } catch (Exception e){
                     logger.error("An error occurred while updating product: {}",e.getMessage());
-                }
-                break;
-            }
-            case "delete": {
-                try{
-                    int id = Integer.parseInt(req.getParameter("id"));
-                    productService.deleteById(id);
-                    resp.sendRedirect("/dashboard");
-                } catch (Exception e){
-                    logger.error("An error occurred while deleting product by id: {}", e.getMessage());
                 }
                 break;
             }

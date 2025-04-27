@@ -135,13 +135,16 @@
                 <th>Invoice</th>
             </thead>
             <tbody>
-                <c:forEach items="${sessionScope.saleRecords}" var="saleRecord">
+                <c:forEach items="${sessionScope.saleRecords}" var="sale">
                     <tr>
-                        <td>${saleRecord.id}</td>
-                        <td>${saleRecord.totalPrice}</td>
-                        <td>${saleRecord.saleTime}</td>
+                        <td>${sale.id}</td>
+                        <td>${sale.totalPrice}</td>
+                        <td>${sale.saleTime}</td>
                         <td>
-                            <button><a href="">GetInvoicePdf</a></button>
+                            <form action="/getInvoicePdf" method="post" target="_blank">
+                                <input type="hidden" name="saleId" value="${sale.id}">
+                                <button>GetInvoicePdf</button>
+                            </form>
                         </td>
                     </tr>
                 </c:forEach>

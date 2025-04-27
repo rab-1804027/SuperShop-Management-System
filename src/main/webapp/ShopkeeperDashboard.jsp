@@ -145,8 +145,7 @@
                     <td>${product.name}</td>
                     <td>${product.price}</td>
                     <td>${product.stockQuantity}</td>
-                    <td><button><a href="/product?action=updateForm&id=${product.id}">Update</a></button>
-                    <button><a href="/product?action=delete&id=${product.id}">Delete</a></button></td>
+                    <td><button><a href="/product?action=updateForm&id=${product.id}">Update</a></button></td>
                     <td><form action="/productCart?action=add&productId=${product.id}" method="post">
                         <input type="number" name="quantity" placeholder="Enter Quantity" required>
                         <button type="submit">Add</button>

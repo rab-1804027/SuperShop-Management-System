@@ -25,10 +25,6 @@ public class ProductService {
         productDao.updateById(product);
     }
 
-    public void deleteById(Integer id) throws SQLException {
-        productDao.deleteById(id);
-    }
-
     public ProductDto findById(int id) throws SQLException {
         return productDao.findById(id);
     }
