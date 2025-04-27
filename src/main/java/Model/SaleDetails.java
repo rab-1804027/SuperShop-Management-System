@@ -8,7 +8,6 @@ public class SaleDetails {
     private double price;
 
     public SaleDetails(int id, int saleId, int productId, double quantity, double price) {
-        this.id = id;
         this.saleId = saleId;
         this.productId = productId;
         this.quantity = quantity;
