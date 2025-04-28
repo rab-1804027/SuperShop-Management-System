@@ -37,41 +37,6 @@
             text-decoration: underline;
         }
 
-        /* Title hover (SuperShop Management System) */
-        .title h1 {
-            margin: 0;
-            font-size: 24px;
-            .navbar{
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
-        .navbar nav{
-            flex: 1;
-            text-align: right;
-        }
-        .navbar nav ul{
-            display: inline-block;
-            list-style-type: none;
-        }
-        .navbar nav ul li{
-            display: inline-block;
-            margin-right: 20px;
-        }
-        .navbar a{
-            text-decoration: none;
-            color: #555;
-        }color: #28a745;
-            transition: color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .title h1:hover {
-            color: #1c7c34;
-            text-decoration: underline;
-        }
-
 
         .productCartList{
             margin: 40px auto;

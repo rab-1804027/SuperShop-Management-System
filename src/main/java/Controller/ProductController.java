@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -71,27 +70,29 @@ public class ProductController extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-
+        HttpSession session = req.getSession();
         switch (action){
             case "add": {
                 try{
                     int userId = Integer.parseInt(req.getParameter("userId"));
-                    System.out.println(userId);
                     String name = req.getParameter("name");
                     double price = Double.parseDouble(req.getParameter("price"));
                     double stockQuantity = Double.parseDouble(req.getParameter("stockQuantity"));
 
                     ProductValidator validator = ProductValidator.getSingleObject();
                     Map<String,String> errors = validator.validate(name, price, stockQuantity);
+
                     if(!errors.isEmpty()) {
                         logger.error(errors.toString());
-                        req.setAttribute("errors", errors);
-                        req.getRequestDispatcher("ProductForm.jsp").forward(req, resp);
+                        session.setAttribute("errors", errors);
+                        session.setAttribute("action", "productForm");
+                        resp.sendRedirect("/jspPage/ProductForm");
                     }
-
-                    productService.save(new Product(userId, name, price, stockQuantity));
-                    logger.info("Product::{} added successfully", name);
-                    resp.sendRedirect("/dashboard");
+                    else{
+                        productService.save(new Product(userId, name, price, stockQuantity));
+                        logger.info("Product::{} added successfully", name);
+                        resp.sendRedirect("/dashboard");
+                    }
                 } catch (Exception e){
                     logger.error("An error occurred while saving product: {}", e.getMessage());
                     req.getRequestDispatcher("ProductForm.jsp").forward(req, resp);
@@ -106,7 +107,7 @@ public class ProductController extends HttpServlet {
                     double stockQuantity = Double.parseDouble(req.getParameter("stockQuantity"));
                     ProductDto product = new ProductDto(id, name, price, stockQuantity);
                     productService.updateById(product);
-                    HttpSession session = req.getSession();
+
                     session.removeAttribute("product");
                     resp.sendRedirect("/dashboard");
                 } catch (Exception e){

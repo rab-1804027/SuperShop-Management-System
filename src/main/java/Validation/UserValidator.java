@@ -3,7 +3,6 @@ package Validation;
 import Dto.UserDto;
 import Service.UserService;
 import Utility.Constants;
-import Utility.PasswordHashing;
 import Utility.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import Exception.UserValidationException;

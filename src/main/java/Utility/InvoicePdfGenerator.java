@@ -18,9 +18,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 public class InvoicePdfGenerator {
-    public static void generateInvoicePdf(List<SaleDetailsDto> saleDetails,
-                                          double totalPrice,
-                                          String saleTime,
+    public static void generateInvoicePdf(List<SaleDetailsDto> saleDetails, double totalPrice, String saleTime,
                                           OutputStream outputStream) throws DocumentException {
         // Create PDF document
         Document document = new Document(PageSize.A4);

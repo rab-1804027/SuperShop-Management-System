@@ -1,8 +1,6 @@
 package Controller;
 
 import Dto.UserDto;
-import Model.User;
-import Exception.UserValidationException;
 import Service.UserService;
 import Utility.Constants;
 import Utility.PasswordHashing;
@@ -48,6 +46,7 @@ public class LoginController extends HttpServlet {
 
             UserService userService = UserService.getSingleObject();
             UserDto userDto = userService.findByUsername(username);
+
             if(userDto!=null && PasswordHashing.checkPassword(password, userDto.getPassword())) {
                 logger.info("{} logged in successfully", username);
                 session.setAttribute("userId", userDto.getId());

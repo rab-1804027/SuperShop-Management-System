@@ -130,6 +130,7 @@
     <div class = "productList">
         <table>
             <caption><h1>Product List</h1></caption>
+            <h2 style="color: red; text-align: right">${error}</h2>
             <thead>
                 <th>ID</th>
                 <th>Name</th>

@@ -1,6 +1,5 @@
 package Mapper;
 
-import Dao.SaleDetailsDao;
 import Dto.SaleDetailsDto;
 
 import java.sql.ResultSet;

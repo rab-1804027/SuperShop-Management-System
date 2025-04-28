@@ -8,8 +8,6 @@ import Model.ProductCart;
 import Utility.InvoicePdfGenerator;
 import com.itextpdf.text.DocumentException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
@@ -38,7 +36,6 @@ public class SaleDetailsService {
 
     public void findDetailsForInvoice(int saleId, HttpServletResponse response) throws SQLException, DocumentException, IOException, ServletException {
         try {
-          //  int saleId = Integer.parseInt(request.getParameter("saleId")); System.out.println(saleId);
             SaleService saleService = SaleService.getSingleObject();
             SaleDto saleDto= saleService.findBySaleId(saleId);
             double totalPrice = saleDto.getTotalPrice();
@@ -49,11 +46,8 @@ public class SaleDetailsService {
             response.setContentType("application/pdf");
             response.setHeader("Content-Disposition", "inline; filename=Invoice_" + saleId + ".pdf");
 
-            InvoicePdfGenerator.generateInvoicePdf(saleDetails,
-                    totalPrice,
-                    saleTime,
-                    response.getOutputStream()
-            );
+            InvoicePdfGenerator.generateInvoicePdf(saleDetails, totalPrice, saleTime, response.getOutputStream());
+
         } catch (NumberFormatException e) {
             throw new ServletException("Invalid sale ID or total price", e);
         }

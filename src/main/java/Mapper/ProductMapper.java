@@ -1,7 +1,6 @@
 package Mapper;
 
 import Dto.ProductDto;
-import Model.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
