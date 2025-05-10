@@ -1,5 +1,7 @@
 package Model;
 
+import Enums.ApprovalStatus;
+
 import java.time.LocalDateTime;
 
 public class User {
@@ -11,13 +13,6 @@ public class User {
     private String role;
     private LocalDateTime registrationTime;
     private ApprovalStatus approvalStatus;
-
-    private User(){}
-    private static final User singleObject = new User();
-
-    public User getSingleObject() {
-        return singleObject;
-    }
 
     public User(String name, String email, String username, String password) {
         this.name = name;
@@ -36,10 +31,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
-    }
-
-    public enum ApprovalStatus {
-        PENDING, APPROVED, REJECTED;
     }
 
     public int getId() {

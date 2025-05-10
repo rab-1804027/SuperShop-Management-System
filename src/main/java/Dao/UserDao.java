@@ -1,14 +1,20 @@
 package Dao;
 
 import Config.DbConfig;
+import Dto.UserDto;
+import Dto.UserInfoDto;
+import Enums.ApprovalStatus;
+import Mapper.UserMapper;
 import Model.User;
-import Utility.Constants;
 
-import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
     Connection connection = DbConfig.connectDb();
+
+    UserMapper userMapper = UserMapper.getSingleObject();
 
     private UserDao() {}
     private static final UserDao singleObject = new UserDao();
@@ -17,30 +23,11 @@ public class UserDao {
         return singleObject;
     }
 
-//    public boolean usernameValidation(String username) throws SQLException, ClassNotFoundException {
-//        String sqlQuery = "select * from users where username=?";
-//        try(PreparedStatement pst = connection.prepareStatement(sqlQuery)){
-//            pst.setString(1, username);
-//            ResultSet result = pst.executeQuery();
-//            return result.next();
-//        }
-//    }
-//
-//    public boolean emailValidation(String email) throws SQLException, ClassNotFoundException {
-//        String sqlQuery = "select * from users where email=?";
-//        try(PreparedStatement pst = connection.prepareStatement(sqlQuery)){
-//            pst.setString(1, email);
-//            ResultSet result = pst.executeQuery();
-//            return result.next();
-//        }
-//    }
-
-    public void save(User user) throws SQLException, ClassNotFoundException,IOException {
+    public void save(User user) throws SQLException {
 
         String sqlQuery = "insert into users (name, username, email, password, role, registrationTime) values (?,?,?,?,?,?)";
 
         try(PreparedStatement pst = connection.prepareStatement(sqlQuery)) {
-            System.out.println(user);
             pst.setString(1, user.getName());
             pst.setString(2, user.getUsername());
             pst.setString(3, user.getEmail());
@@ -51,38 +38,51 @@ public class UserDao {
         }
     }
 
-    public User findByUsername(String username) throws SQLException, ClassNotFoundException {
+    public void assignRole(String username, String role, ApprovalStatus status) throws SQLException {
+        String sqlQuery = "update users set role=?, approvalStatus=? where username=?";
+        try(PreparedStatement pst = connection.prepareStatement(sqlQuery)){
+            pst.setString(1, role);
+            pst.setString(2, status.name());
+            pst.setString(3, username);
+            pst.executeUpdate();
+        }
+    }
+
+    public UserDto findByUsername(String username) throws SQLException {
         String sqlQuery = "select * from users where username=?";
         try(PreparedStatement pst = connection.prepareStatement(sqlQuery)){
             pst.setString(1, username);
             ResultSet result = pst.executeQuery();
-            User user = null;
-            while(result.next()) {
-                int id = result.getInt(Constants.UserInfo.ID);
-                String name = result.getString(Constants.UserInfo.NAME);
-                String email = result.getString(Constants.UserInfo.EMAIL);
-                String password = result.getString(Constants.UserInfo.PASSWORD);
-                String role = result.getString(Constants.UserInfo.ROLE);
-                user = new User(id, name, email, username, password, role);
+            if(result.next()){
+                return userMapper.resultToDto(result);
             }
-            return user;
         }
+        return null;
     }
-    public User findByEmail(String email) throws SQLException, ClassNotFoundException {
+
+    public UserDto findByEmail(String email) throws SQLException {
         String sqlQuery = "select * from users where email=?";
         try(PreparedStatement pst = connection.prepareStatement(sqlQuery)){
             pst.setString(1, email);
             ResultSet result = pst.executeQuery();
-            User user = null;
-            while(result.next()) {
-                int id = result.getInt(Constants.UserInfo.ID);
-                String name = result.getString(Constants.UserInfo.NAME);
-                String username = result.getString(Constants.UserInfo.USERNAME);
-                String password = result.getString(Constants.UserInfo.PASSWORD);
-                String role = result.getString(Constants.UserInfo.ROLE);
-                user = new User(id, name, email, username, password, role);
+            if(result.next()){
+                return userMapper.resultToDto(result);
             }
-            return user;
         }
+        return null;
     }
+
+    public List<UserInfoDto> findByApprovalStatus(ApprovalStatus status) throws SQLException {
+        List<UserInfoDto> userList = new ArrayList<>();
+        String sqlQuery = "select * from users where approvalStatus=?";
+        try(PreparedStatement pst = connection.prepareStatement(sqlQuery)){
+            pst.setString(1, status.name());
+            ResultSet result = pst.executeQuery();
+            while(result.next()){
+                userList.add(userMapper.resultToInfoDto(result));
+            }
+        }
+        return userList;
+    }
+
 }

@@ -1,18 +1,21 @@
 package Service;
 
 import Dao.UserDao;
+import Dto.UserDto;
+import Dto.UserInfoDto;
+import Enums.ApprovalStatus;
 import Model.User;
-import Exception.UserNotFoundException;
+import Utility.PasswordHashing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Logger;
+import java.util.List;
 
 public class UserService {
 
     UserDao userDao = UserDao.getSingleObject();
-    Logger logger = Logger.getLogger(UserService.class.getName());
-
+    Logger logger = LoggerFactory.getLogger(UserService.class);
     private UserService(){}
     private static final UserService singleObject = new UserService();
 
@@ -20,27 +23,26 @@ public class UserService {
         return singleObject;
     }
 
-//    public boolean usernameValidation(String username) throws SQLException, ClassNotFoundException {
-//        return userDao.usernameValidation(username);
-//    }
-//
-//    public boolean emailValidation(String username) throws SQLException, ClassNotFoundException {
-//        return userDao.emailValidation(username);
-//    }
-
-    public void save(String name, String email, String username, String password) throws SQLException, IOException, ClassNotFoundException {
-        logger.info("Saving user");
+    public void save(String name, String email, String username, String password) throws SQLException {
+        logger.info("Saved a new user username::{}", username);
+        password = PasswordHashing.hashPassword(password);
         User user = new User(name, email, username, password);
         userDao.save(user);
     }
 
-    public User findByUsername(String username) throws SQLException, ClassNotFoundException, UserNotFoundException {
-        User user = userDao.findByUsername(username);
-        return user;
+    public void assignRole(String username, String role, ApprovalStatus status) throws SQLException {
+        userDao.assignRole(username, role, status);
     }
 
-    public User findByEmail(String email) throws SQLException, ClassNotFoundException, UserNotFoundException {
-        User user = userDao.findByEmail(email);
-        return user;
+    public UserDto findByUsername(String username) throws SQLException {
+        return userDao.findByUsername(username);
+    }
+
+    public UserDto findByEmail(String email) throws SQLException {
+        return userDao.findByEmail(email);
+    }
+
+    public List<UserInfoDto> findByApprovalStatus(ApprovalStatus status) throws SQLException {
+        return userDao.findByApprovalStatus(status);
     }
 }

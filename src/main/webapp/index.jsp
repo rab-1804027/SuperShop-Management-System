@@ -5,13 +5,18 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
+
+<nav>
+
+</nav>
+
 <h1><%= "Hello World!" %>
 </h1>
 <br/>
 <a href="hello-servlet">Hello Servlet</a>
 <br>
-<small>${sessionScope.username}</small>
-<button><a href="/logout">Logout</a></button>
+<button><a href="/login">Login</a></button>
+<button><a href="/register">Register</a></button>
 
 </body>
 </html>

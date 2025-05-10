@@ -6,6 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+    // Prevent caching
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+
+    // If already logged in, redirect to dashboard
+    if (session.getAttribute("user") != null) {
+        response.sendRedirect("dashboard.jsp");
+        return;
+    }
+%>
+
 <html>
 <head>
     <title>Login Page</title>
@@ -66,18 +80,29 @@
 </head>
 <body>
 
-    <div class="Login">
+<div class="Login">
         <h2>Login into SuperShop</h2>
+        <h4 style="color: red;">${error}</h4>
         <form action="login" method="post">
             <input type="text" name="username" placeholder="Enter Username" required>
+            ${usernameError}
             <br>
             <input type="password" name="password" placeholder="Enter Password" required>
-            ${error}
+            ${passwordError}
             <br>
             <input type="submit" value="Login">
         </form>
     </div>
 
+<script>
+    // Try to force recheck from server on back navigation
+    window.addEventListener("pageshow", function(event) {
+        // If the page is loaded from cache
+        if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+            location.reload(); // Force reloading from server
+        }
+    });
+</script>
 
 </body>
 </html>

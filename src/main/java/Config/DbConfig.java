@@ -6,21 +6,19 @@ import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import static com.mysql.cj.conf.PropertyKey.logger;
-
 public class DbConfig {
 
     private static final Logger logger = LoggerFactory.getLogger(DbConfig.class);
     private static DbConfig singleObject = new DbConfig();
 
-    static AppProperties properties = AppProperties.getSingleObject();
+    static ApplicationProperties properties = ApplicationProperties.getSingleObject();
 
     private DbConfig() {}
     public static Connection connectDb() {
         Connection con = null;
         try {
-            Class.forName(AppProperties.getProperty("db.mysql.driver"));
-            con = DriverManager.getConnection(AppProperties.getProperty("db.mysql.url"), AppProperties.getProperty("db.mysql.username"), AppProperties.getProperty("db.mysql.password"));
+            Class.forName(ApplicationProperties.getProperty("db.mysql.driver"));
+            con = DriverManager.getConnection(ApplicationProperties.getProperty("db.mysql.url"), ApplicationProperties.getProperty("db.mysql.username"), ApplicationProperties.getProperty("db.mysql.password"));
         } catch (Exception e) {
             logger.error("Database connection failed", e.getMessage());
         }

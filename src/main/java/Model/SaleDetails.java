@@ -4,13 +4,14 @@ public class SaleDetails {
     private int id;
     private int saleId;
     private int productId;
+    private double unitPrice;
     private double quantity;
     private double price;
 
-    public SaleDetails(int id, int saleId, int productId, double quantity, double price) {
-        this.id = id;
+    public SaleDetails(int id, int saleId, int productId,double unitPrice, double quantity, double price) {
         this.saleId = saleId;
         this.productId = productId;
+        this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.price = price;
     }
@@ -37,6 +38,14 @@ public class SaleDetails {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public void setUnitPrice(double unitPrice){
+        this.unitPrice = unitPrice;
+    }
+
+    public double getUnitPrice(){
+        return unitPrice;
     }
 
     public double getQuantity() {

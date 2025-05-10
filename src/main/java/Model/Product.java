@@ -1,13 +1,14 @@
 package Model;
 
-public class Products {
-    private Integer id;
+public class Product {
+    private int id;
+    private int userId;
     private String name;
     private double price;
     private double stockQuantity;
 
-    public Products(Integer id, String name, double price, double stockQuantity) {
-        this.id = id;
+    public Product(int userId, String name, double price, double stockQuantity) {
+        this.userId = userId;
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;
@@ -43,5 +44,11 @@ public class Products {
 
     public void setStockQuantity(double stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+    public int getUserId() {
+        return userId;
+    }
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }
